@@ -6,6 +6,7 @@ import com.tranaction.cn.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -26,8 +27,13 @@ public class UserServiceImpl implements UserService{
         return this.userMapper.getUser(id);
     }
 
+    /**
+     * SERIALIZABLE 阻止了事务并发
+     * @param user
+     * @return
+     */
     @Override
-    @Transactional
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public int insertUser(User user) {
         log.info(" insertUser {}",user);
         return this.userMapper.insertUser(user);
